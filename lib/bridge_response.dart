@@ -28,3 +28,22 @@ class BridgeResponse {
         'error': error,
       };
 }
+
+class UserInfoResponse {
+  final String? token;
+  final String? expire;
+
+  UserInfoResponse({
+    required this.token,
+    required this.expire,
+  });
+
+  factory UserInfoResponse.fromJson(Map<String, dynamic>? json) =>
+      UserInfoResponse(
+        token: asString(json, 'token'),
+        expire: asString(json, 'expire'),
+      );
+
+  factory UserInfoResponse.fromJsonString(String jsonString) =>
+      UserInfoResponse.fromJson(json.decode(jsonString));
+}

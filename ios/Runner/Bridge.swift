@@ -38,10 +38,24 @@ class Bridge {
                         return
                     }
                     self?.getHiveAuthString(username: username, result: result)
+                case "getUserInfo":
+                    self?.getUserInfo(result: result)
                 default:
                     result(FlutterMethodNotImplemented)
             }
         })
+    }
+
+    private func getUserInfo(result: @escaping FlutterResult) {
+        guard let hiveController = hiveController else {
+            result(FlutterError(code: "ERROR",
+                                message: "Error setting up Hive",
+                                details: nil))
+            return
+        }
+        hiveController.getUserInfo { string in
+            result(string)
+        }
     }
 
     private func getHiveAuthString(username: String, result: @escaping FlutterResult) {

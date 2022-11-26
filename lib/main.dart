@@ -18,7 +18,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData.dark(useMaterial3: true),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MyHomePage(title: 'Hive Auth + Flutter'),
+      debugShowCheckedModeBanner: false,
     );
   }
 }
@@ -33,6 +34,8 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  var token = "None yet";
+  var expiry = "None yet";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -42,21 +45,45 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title),
       ),
       body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: ElevatedButton(
-          child: const Text('Log in'),
-          onPressed: () async {
-            var platform = const MethodChannel('blog.hive.auth/auth');
-            final String authStr =
-                await platform.invokeMethod('hiveAuthString', {
-              'username': 'sagarkothari88',
-            });
-            log('Hive auth string is $authStr');
-            var response = BridgeResponse.fromJsonString(authStr);
-            var url = Uri.parse(response.error);
-            launchUrl(url);
-          },
+        child: Column(
+          children: [
+            const Spacer(),
+            Text("Hive Auth Token - $token"),
+            const SizedBox(height: 15),
+            Text("Hive Auth Token Expiry - $expiry"),
+            const SizedBox(height: 15),
+            ElevatedButton(
+              child: const Text('Log in'),
+              onPressed: () async {
+                var platform = const MethodChannel('blog.hive.auth/auth');
+                final String authStr =
+                    await platform.invokeMethod('hiveAuthString', {
+                  'username': 'sagarkothari88',
+                });
+                log('Hive auth string is $authStr');
+                var response = BridgeResponse.fromJsonString(authStr);
+                var url = Uri.parse(response.error);
+                launchUrl(url);
+              },
+            ),
+            const SizedBox(height: 15),
+            ElevatedButton(
+              child: const Text('Refresh'),
+              onPressed: () async {
+                var platform = const MethodChannel('blog.hive.auth/auth');
+                final String data = await platform.invokeMethod('getUserInfo');
+                log('Data is $data');
+                var response = BridgeResponse.fromJsonString(data);
+                var userInfoData =
+                    UserInfoResponse.fromJsonString(response.error);
+                setState(() {
+                  token = userInfoData.token ?? "None yet";
+                  expiry = userInfoData.expire ?? "None yet";
+                });
+              },
+            ),
+            const Spacer(),
+          ],
         ),
       ),
     );

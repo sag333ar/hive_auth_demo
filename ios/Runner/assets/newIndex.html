@@ -118,6 +118,21 @@
         console.log("The browser doesn't support WebSocket");
       }
 
+      function getUserInfo() {
+        var obj = {
+          username: username,
+          token: token,
+          expire: expire,
+        };
+        var json = JSON.stringify(obj);
+        replyToNative({
+          type: "hiveAuthUserInfo",
+          valid: true,
+          username: username,
+          error: json,
+        });
+      }
+
       function click_login(uname) {
         username = uname.toLowerCase();
         const auth_data = {

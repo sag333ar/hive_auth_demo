@@ -15,6 +15,7 @@ class HiveViewController: UIViewController {
     var webView: WKWebView?
     var didFinish = false
     var hiveAuthStringHandler: ((String) -> Void)? = nil
+    var hiveUserInfoHandler: ((String) -> Void)? = nil
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,6 +33,11 @@ class HiveViewController: UIViewController {
     func getHiveAuthString(_ username: String, handler: @escaping (String) -> Void) {
         hiveAuthStringHandler = handler
         webView?.evaluateJavaScript("click_login('\(username)');")
+    }
+
+    func getUserInfo(_ handler: @escaping (String) -> Void) {
+        hiveUserInfoHandler = handler
+        webView?.evaluateJavaScript("getUserInfo();")
     }
 }
 
@@ -57,10 +63,15 @@ extension HiveViewController: WKScriptMessageHandler {
                     let error = dict["error"] as? String,
                     let response = ValidHiveResponse.jsonStringFrom(dict: dict)
                 else { return }
-                debugPrint("Is it valid? \(isValid ? "TRUE" : "FALSE")")
-                debugPrint("account name is \(accountName)")
-                debugPrint("Error is \(error)")
                 hiveAuthStringHandler?(response)
+            case "hiveAuthUserInfo":
+                guard
+                    let isValid = dict["valid"] as? Bool,
+                    let accountName = dict["username"] as? String,
+                    let error = dict["error"] as? String,
+                    let response = ValidHiveResponse.jsonStringFrom(dict: dict)
+                else { return }
+                hiveUserInfoHandler?(response)
             default: debugPrint("Do nothing here.")
         }
     }
