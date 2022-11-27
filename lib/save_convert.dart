@@ -5,10 +5,11 @@ int asInt(Map<String, dynamic>? json, String key, {int defaultValue = 0}) {
   if (value is int) return value;
   if (value is double) return value.toInt();
   if (value is bool) return value ? 1 : 0;
-  if (value is String)
+  if (value is String) {
     return int.tryParse(value) ??
         double.tryParse(value)?.toInt() ??
         defaultValue;
+  }
   return defaultValue;
 }
 

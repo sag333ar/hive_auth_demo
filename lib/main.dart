@@ -55,22 +55,24 @@ class _MyHomePageState extends State<MyHomePage> {
             ElevatedButton(
               child: const Text('Log in'),
               onPressed: () async {
-                var platform = const MethodChannel('blog.hive.auth/auth');
+                var platform = const MethodChannel('blog.hive.auth/bridge');
                 final String authStr =
-                    await platform.invokeMethod('hiveAuthString', {
+                    await platform.invokeMethod('_f2n_get_redirect_uri', {
                   'username': 'sagarkothari88',
                 });
                 log('Hive auth string is $authStr');
                 var response = BridgeResponse.fromJsonString(authStr);
-                var url = Uri.parse(response.error);
-                launchUrl(url);
+                if (response.data != null) {
+                  var url = Uri.parse(response.data!);
+                  launchUrl(url);
+                }
               },
             ),
             const SizedBox(height: 15),
             ElevatedButton(
               child: const Text('Refresh'),
               onPressed: () async {
-                var platform = const MethodChannel('blog.hive.auth/auth');
+                var platform = const MethodChannel('blog.hive.auth/bridge');
                 final String data = await platform.invokeMethod('getUserInfo');
                 log('Data is $data');
                 var response = BridgeResponse.fromJsonString(data);

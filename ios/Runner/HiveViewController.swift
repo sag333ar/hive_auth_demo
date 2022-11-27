@@ -14,7 +14,7 @@ class HiveViewController: UIViewController {
     let rect = CGRect(x: 0, y: 0, width: 10, height: 10)
     var webView: WKWebView?
     var didFinish = false
-    var hiveAuthStringHandler: ((String) -> Void)? = nil
+    var _n2f_get_redirect_uri: ((String) -> Void)? = nil
     var hiveUserInfoHandler: ((String) -> Void)? = nil
 
     override func viewDidLoad() {
@@ -30,9 +30,9 @@ class HiveViewController: UIViewController {
         webView?.loadFileURL(url, allowingReadAccessTo: dir)
     }
 
-    func getHiveAuthString(_ username: String, handler: @escaping (String) -> Void) {
-        hiveAuthStringHandler = handler
-        webView?.evaluateJavaScript("click_login('\(username)');")
+    func getRedirectUri(_ username: String, handler: @escaping (String) -> Void) {
+        _n2f_get_redirect_uri = handler
+        webView?.evaluateJavaScript("_n2j_get_redirect_uri('\(username)');")
     }
 
     func getUserInfo(_ handler: @escaping (String) -> Void) {
@@ -56,20 +56,20 @@ extension HiveViewController: WKScriptMessageHandler {
         guard let dict = message.body as? [String: AnyObject] else { return }
         guard let type = dict["type"] as? String else { return }
         switch type {
-            case "hiveAuthString":
+            case "_j2n_get_redirect_uri":
                 guard
                     let isValid = dict["valid"] as? Bool,
                     let accountName = dict["username"] as? String,
                     let error = dict["error"] as? String,
-                    let response = ValidHiveResponse.jsonStringFrom(dict: dict)
+                    let response = NativeToFlutterResponse.jsonStringFrom(dict: dict)
                 else { return }
-                hiveAuthStringHandler?(response)
+                _n2f_get_redirect_uri?(response)
             case "hiveAuthUserInfo":
                 guard
                     let isValid = dict["valid"] as? Bool,
                     let accountName = dict["username"] as? String,
                     let error = dict["error"] as? String,
-                    let response = ValidHiveResponse.jsonStringFrom(dict: dict)
+                    let response = NativeToFlutterResponse.jsonStringFrom(dict: dict)
                 else { return }
                 hiveUserInfoHandler?(response)
             default: debugPrint("Do nothing here.")
@@ -77,20 +77,22 @@ extension HiveViewController: WKScriptMessageHandler {
     }
 }
 
-struct ValidHiveResponse: Codable {
+struct NativeToFlutterResponse: Codable {
     let valid: Bool
     let username: String?
     let error: String
+    let data: String?
 
     static func jsonStringFrom(dict: [String: AnyObject]) -> String? {
         guard
             let isValid = dict["valid"] as? Bool,
             let error = dict["error"] as? String
         else { return nil }
-        let response = ValidHiveResponse(
+        let response = NativeToFlutterResponse(
             valid: isValid,
             username: dict["username"] as? String,
-            error: error
+            error: error,
+            data: dict["data"] as? String
         )
         guard let data = try? JSONEncoder().encode(response) else { return nil }
         guard let dataString = String(data: data, encoding: .utf8) else { return nil }

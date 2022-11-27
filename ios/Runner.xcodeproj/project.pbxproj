@@ -9,7 +9,6 @@
 /* Begin PBXBuildFile section */
 		1498D2341E8E89220040F4C2 /* GeneratedPluginRegistrant.m in Sources */ = {isa = PBXBuildFile; fileRef = 1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */; };
 		1557BE0D275C22377B75ED92 /* Pods_Runner.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 284230D5791E9F3190C91BAC /* Pods_Runner.framework */; };
-		1B309A4C292F7F9100B7126E /* index.html in Resources */ = {isa = PBXBuildFile; fileRef = 1B309A4A292F7F9100B7126E /* index.html */; };
 		1B309A4D292F7F9100B7126E /* newIndex.html in Resources */ = {isa = PBXBuildFile; fileRef = 1B309A4B292F7F9100B7126E /* newIndex.html */; };
 		1B309A4F292F802F00B7126E /* HiveViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B309A4E292F802F00B7126E /* HiveViewController.swift */; };
 		1B309A51292F813300B7126E /* Bridge.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1B309A50292F813300B7126E /* Bridge.swift */; };
@@ -36,7 +35,6 @@
 /* Begin PBXFileReference section */
 		1498D2321E8E86230040F4C2 /* GeneratedPluginRegistrant.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GeneratedPluginRegistrant.h; sourceTree = "<group>"; };
 		1498D2331E8E89220040F4C2 /* GeneratedPluginRegistrant.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = GeneratedPluginRegistrant.m; sourceTree = "<group>"; };
-		1B309A4A292F7F9100B7126E /* index.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = index.html; sourceTree = "<group>"; };
 		1B309A4B292F7F9100B7126E /* newIndex.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = newIndex.html; sourceTree = "<group>"; };
 		1B309A4E292F802F00B7126E /* HiveViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HiveViewController.swift; sourceTree = "<group>"; };
 		1B309A50292F813300B7126E /* Bridge.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Bridge.swift; sourceTree = "<group>"; };
@@ -72,7 +70,6 @@
 		1B309A49292F7F9100B7126E /* assets */ = {
 			isa = PBXGroup;
 			children = (
-				1B309A4A292F7F9100B7126E /* index.html */,
 				1B309A4B292F7F9100B7126E /* newIndex.html */,
 			);
 			path = assets;
@@ -207,7 +204,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1B309A4C292F7F9100B7126E /* index.html in Resources */,
 				97C147011CF9000F007C117D /* LaunchScreen.storyboard in Resources */,
 				1B309A4D292F7F9100B7126E /* newIndex.html in Resources */,
 				3B3967161E833CAA004F5970 /* AppFrameworkInfo.plist in Resources */,

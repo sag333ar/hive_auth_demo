@@ -21,7 +21,7 @@ class Bridge {
         self.window = window
         self.hiveController = hiveController
         let authChannel = FlutterMethodChannel(
-            name: "blog.hive.auth/auth",
+            name: "blog.hive.auth/bridge",
             binaryMessenger: controller.binaryMessenger
         )
 
@@ -29,7 +29,7 @@ class Bridge {
             [weak self] (call: FlutterMethodCall, result: @escaping FlutterResult) -> Void in
             // Note: this method is invoked on the UI thread.
             switch (call.method) {
-                case "hiveAuthString":
+                case "_f2n_get_redirect_uri":
                     guard
                         let arguments = call.arguments as? NSDictionary,
                         let username = arguments ["username"] as? String
@@ -37,7 +37,7 @@ class Bridge {
                         result(FlutterMethodNotImplemented)
                         return
                     }
-                    self?.getHiveAuthString(username: username, result: result)
+                    self?.getRedirectUri(username: username, result: result)
                 case "getUserInfo":
                     self?.getUserInfo(result: result)
                 default:
@@ -58,14 +58,14 @@ class Bridge {
         }
     }
 
-    private func getHiveAuthString(username: String, result: @escaping FlutterResult) {
+    private func getRedirectUri(username: String, result: @escaping FlutterResult) {
         guard let hiveController = hiveController else {
             result(FlutterError(code: "ERROR",
                                 message: "Error setting up Hive",
                                 details: nil))
             return
         }
-        hiveController.getHiveAuthString(username) { string in
+        hiveController.getRedirectUri(username) { string in
             result(string)
         }
     }
