@@ -55,22 +55,12 @@ extension HiveViewController: WKScriptMessageHandler {
         guard message.name == hive else { return }
         guard let dict = message.body as? [String: AnyObject] else { return }
         guard let type = dict["type"] as? String else { return }
+        guard let response = NativeToFlutterResponse.jsonStringFrom(dict: dict)
+        else { return }
         switch type {
             case "_j2n_get_redirect_uri":
-                guard
-                    let isValid = dict["valid"] as? Bool,
-                    let accountName = dict["username"] as? String,
-                    let error = dict["error"] as? String,
-                    let response = NativeToFlutterResponse.jsonStringFrom(dict: dict)
-                else { return }
                 _n2f_get_redirect_uri?(response)
             case "hiveAuthUserInfo":
-                guard
-                    let isValid = dict["valid"] as? Bool,
-                    let accountName = dict["username"] as? String,
-                    let error = dict["error"] as? String,
-                    let response = NativeToFlutterResponse.jsonStringFrom(dict: dict)
-                else { return }
                 hiveUserInfoHandler?(response)
             default: debugPrint("Do nothing here.")
         }

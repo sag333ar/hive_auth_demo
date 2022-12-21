@@ -76,11 +76,10 @@ class _MyHomePageState extends State<MyHomePage> {
                 final String data = await platform.invokeMethod('getUserInfo');
                 log('Data is $data');
                 var response = BridgeResponse.fromJsonString(data);
-                var userInfoData =
-                    UserInfoResponse.fromJsonString(response.error);
+                var userInfoData = response.data?.split(",");
                 setState(() {
-                  token = userInfoData.token ?? "None yet";
-                  expiry = userInfoData.expire ?? "None yet";
+                  token = userInfoData?[0] ?? "None yet";
+                  expiry = userInfoData?[1] ?? "None yet";
                 });
               },
             ),

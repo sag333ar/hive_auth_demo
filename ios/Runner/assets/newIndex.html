@@ -108,18 +108,12 @@
       }
 
       function getUserInfo() {
-        var obj = {
-          username: username,
-          token: token,
-          expire: expire,
-        };
-        var json = JSON.stringify(obj);
         replyToNative({
           type: "hiveAuthUserInfo",
           valid: true,
           username: username,
           error: "",
-          data: json
+          data: `${token},${expire}`
         });
       }
 
